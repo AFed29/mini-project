@@ -14,6 +14,7 @@ products_menu_text = """
     1. Show all products
     2. Create new product
     3. Update existing product
+    4. Delete existing product
 """
 
 couriers_menu_text = """
