@@ -43,7 +43,7 @@ def get_file_contents(file_name: str) -> List[str]:
         
         return file_contents
     
-def format_list_for_display(input_list):
+def format_list_for_display(input_list: List[str]) -> str:
     display_string = ""
     for index, item in enumerate(input_list):
         display_string += f'{index}. {item.rstrip()}\n'
@@ -152,7 +152,8 @@ while True:
             # Display list of orders
             if orders_menu_input == 1:
                 print("orders List:")
-                print(orders)  
+                for index, order in enumerate(orders):
+                    print(order)  
             
             # Add new order
             elif orders_menu_input == 2:  
@@ -174,4 +175,14 @@ while True:
                     "status": "preparing"
                 })
             
+            # Update order status
+            elif orders_menu_input == 3:
+                print("orders List:")
+                for index, order in enumerate(orders):
+                    print(index, order)
+                    
+                order_number = int(input("Please select the order number to update: "))
+                new_status = input("Please enter the new status: ")
+                
+                orders[order_number]['status'] = new_status
 
