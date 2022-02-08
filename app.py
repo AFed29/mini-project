@@ -80,18 +80,18 @@ while True:
             if products_menu_input == 1:
                 print("Products List:")
                 
-                products = get_file_contents('products.txt')
+                products = get_file_contents('data/products.txt')
                 print(format_list_for_display(products))     
             
             # Add new product
             elif products_menu_input == 2:  
                 new_product_input = input("Please enter a new product: ")
-                with open('products.txt', 'a') as open_file:
+                with open('data/products.txt', 'a') as open_file:
                     open_file.write(new_product_input + '\n')
             
             # Update product
             elif products_menu_input == 3:
-                products = get_file_contents('products.txt')
+                products = get_file_contents('data/products.txt')
                 print(format_list_for_display(products))
                 
                 product_index = int(input('Please choose a product index to update: '))
@@ -99,19 +99,19 @@ while True:
                 
                 products[product_index] = product_name + '\n'
                 
-                with open('products.txt', 'w') as file:
+                with open('data/products.txt', 'w') as file:
                     file.writelines(products)
                 
             # Delete Product
             elif products_menu_input == 4:
-                products = get_file_contents('products.txt')
+                products = get_file_contents('data/products.txt')
                 print(format_list_for_display(products))
                 
                 product_index = int(input('Please choose a product index to delete: '))
                 
                 products.pop(product_index)
                 
-                with open('products.txt', 'w') as file:
+                with open('data/products.txt', 'w') as file:
                     file.writelines(products)
     
     # Enter Couriers Menu 
@@ -129,13 +129,13 @@ while True:
             if couriers_menu_input == 1:
                 print("Couriers List:")
                 
-                couriers = get_file_contents('couriers.txt')
+                couriers = get_file_contents('data/couriers.txt')
                 print(format_list_for_display(couriers))  
             
             # Add new courier
             elif couriers_menu_input == 2:  
                 new_courier_input = input("Please enter a new courier: ")
-                with open('couriers.txt', 'a') as open_file:
+                with open('data/couriers.txt', 'a') as open_file:
                     open_file.write(new_courier_input + '\n')
                     
     # Enter orders menu
@@ -162,7 +162,7 @@ while True:
                 customer_phone = input("Please enter a customer phone number: ")
                 
                 print("Couriers List:")
-                couriers = get_file_contents('couriers.txt')
+                couriers = get_file_contents('data/couriers.txt')
                 print(format_list_for_display(couriers))
                 
                 courier = int(input("Please enter a courier number: "))
