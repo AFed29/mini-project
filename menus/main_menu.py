@@ -19,7 +19,7 @@ def main_menu():
         main_menu_input = int(input("Please make a choice from above: "))
         
         # Print error message when invalid number is selected
-        if main_menu_input not in [0, 1, 2]:
+        if main_menu_input not in [0, 1, 2, 3]:
             print('PLEASE ENTER A VALID CHOICE')
         
         # Exit app
