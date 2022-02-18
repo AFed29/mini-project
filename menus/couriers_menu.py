@@ -1,4 +1,4 @@
-from file_helpers.text_file import get_file_contents, format_list_for_display
+from file_helpers.csv_file import get_file_contents, format_list_for_display, append_to_csv
 
 couriers_menu_text = """
     COURIERS MENU
@@ -22,11 +22,16 @@ def couriers_menu():
         if couriers_menu_input == 1:
             print("Couriers List:")
             
-            couriers = get_file_contents('data/couriers.txt')
+            couriers = get_file_contents('data/couriers.csv')
             print(format_list_for_display(couriers))  
         
         # Add new courier
         elif couriers_menu_input == 2:  
-            new_courier_input = input("Please enter a new courier: ")
-            with open('data/couriers.txt', 'a') as open_file:
-                open_file.write(new_courier_input + '\n')
+            new_courier_name = input("Please enter the name of a new courier: ")
+            new_courier_phone_number= input("Please enter the phone number for the new courier: ")
+            new_courier = {
+                'name': new_courier_name,
+                'phone_number': new_courier_phone_number
+            }
+            
+            append_to_csv('data/couriers.csv', new_courier)

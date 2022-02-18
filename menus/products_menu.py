@@ -1,4 +1,8 @@
-from file_helpers.text_file import get_file_contents, format_list_for_display
+from file_helpers.csv_file import (
+    get_file_contents,
+    format_list_for_display,
+    append_to_csv,
+    write_to_csv)
 
 products_menu_text = """
     PRODUCTS MENU
@@ -24,36 +28,49 @@ def products_menu():
         if products_menu_input == 1:
             print("Products List:")
             
-            products = get_file_contents('data/products.txt')
+            products = get_file_contents('data/products.csv')
             print(format_list_for_display(products))     
         
         # Add new product
         elif products_menu_input == 2:  
-            new_product_input = input("Please enter a new product: ")
-            with open('data/products.txt', 'a') as open_file:
-                open_file.write(new_product_input + '\n')
+            new_product_name = input("Please enter the name of a new product: ")
+            new_product_price= input("Please enter the price of a new product: ")
+            new_product = {
+                'name': new_product_name,
+                'price': new_product_price
+            }
+            
+            append_to_csv('data/products.csv', new_product)
         
         # Update product
         elif products_menu_input == 3:
-            products = get_file_contents('data/products.txt')
+            products = get_file_contents('data/products.csv')
             print(format_list_for_display(products))
             
-            product_index = int(input('Please choose a product index to update: '))
-            product_name = input('Please choose a new product name: ')
+            update_product_index = int(input("Enter the index of the product to update: "))
+            updated_product_name = input("Please enter the new name: ")
+            updated_product_price= input("Please enter the new price: ")
             
-            products[product_index] = product_name + '\n'
+            updated_product = {}
             
-            with open('data/products.txt', 'w') as file:
-                file.writelines(products)
+            if updated_product_name:
+                updated_product['name'] = updated_product_name
+            
+            if updated_product_price:
+                updated_product['price'] = updated_product_price 
+            
+            products[update_product_index - 1].update(updated_product)
+            
+            write_to_csv('data/products.csv', products)
+            
             
         # Delete Product
         elif products_menu_input == 4:
-            products = get_file_contents('data/products.txt')
+            products = get_file_contents('data/products.csv')
             print(format_list_for_display(products))
             
             product_index = int(input('Please choose a product index to delete: '))
             
-            products.pop(product_index)
+            products.pop(product_index - 1)
             
-            with open('data/products.txt', 'w') as file:
-                file.writelines(products)
+            write_to_csv('data/products.csv', products)
