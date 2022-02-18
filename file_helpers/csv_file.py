@@ -9,8 +9,7 @@ def get_file_contents(file_name: str) -> List[Dict[str, Any]]:
         
         return file_contents
     
-def format_list_for_display(input_list: List[Dict[str, Any]]) -> str:
-    display_string = ""
+def format_list_for_display(input_list: List[Dict[str, Any]]) -> PrettyTable:
     table = PrettyTable()
     table.field_names = input_list[0].keys()
     
