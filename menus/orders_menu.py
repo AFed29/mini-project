@@ -37,8 +37,9 @@ def orders_menu():
         # Display list of orders
         if orders_menu_input == 1:
             print("orders List:")
-            join = "SELECT orders.id, customer_name, customer_address, customer_phone, couriers.name AS `courier name`, status, \
-                GROUP_CONCAT(products.name) AS products FROM orders \
+            join = "SELECT orders.id, customer_name, customer_address, customer_phone,\
+                couriers.name AS `courier name`, status GROUP_CONCAT(products.name) AS products \
+                FROM orders \
                 JOIN products_on_orders ON orders.id=order_id \
                 JOIN couriers ON courier_id=couriers.id \
                 JOIN products ON product_id=products.id \
