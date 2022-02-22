@@ -11,8 +11,6 @@ main_menu_text = """
     3. Orders Menu
 """
 
-print("Welcome to your friendly cafe app!")
-
 def main_menu():
     while True:
         print(main_menu_text)

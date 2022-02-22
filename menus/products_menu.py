@@ -3,6 +3,10 @@ from file_helpers.csv_file import (
     format_list_for_display,
     append_to_csv,
     write_to_csv)
+from db.db_helper import (
+    get_table,
+    format_db_result_for_display,
+    add_to_table)
 
 products_menu_text = """
     PRODUCTS MENU
@@ -28,8 +32,8 @@ def products_menu():
         if products_menu_input == 1:
             print("Products List:")
             
-            products = get_file_contents('data/products.csv')
-            print(format_list_for_display(products))     
+            products, column_names = get_table('products')
+            print(format_db_result_for_display(products, column_names))       
         
         # Add new product
         elif products_menu_input == 2:  
@@ -40,7 +44,7 @@ def products_menu():
                 'price': new_product_price
             }
             
-            append_to_csv('data/products.csv', new_product)
+            add_to_table('products', new_product)
         
         # Update product
         elif products_menu_input == 3:

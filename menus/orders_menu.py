@@ -3,6 +3,10 @@ from file_helpers.csv_file import (
     format_list_for_display,
     append_to_csv,
     write_to_csv)
+from db.db_helper import (
+    get_table,
+    format_db_result_for_display,
+    add_to_table)
 
 orders_menu_text = """
     ORDERS MENU
@@ -33,8 +37,14 @@ def orders_menu():
         # Display list of orders
         if orders_menu_input == 1:
             print("orders List:")
-            orders = get_file_contents('data/orders.csv')
-            print(format_list_for_display(orders))  
+            join = "SELECT orders.id, customer_name, customer_address, customer_phone, couriers.name AS `courier name`, status, \
+                GROUP_CONCAT(products.name) AS products FROM orders \
+                JOIN products_on_orders ON orders.id=order_id \
+                JOIN couriers ON courier_id=couriers.id \
+                JOIN products ON product_id=products.id \
+                GROUP BY orders.id"
+            orders, column_names = get_table('orders', join)
+            print(format_db_result_for_display(orders, column_names))  
         
         # Add new order
         elif orders_menu_input == 2:  
@@ -43,8 +53,8 @@ def orders_menu():
             customer_phone = input("Please enter a customer phone number: ")
             
             print("Couriers List:")
-            couriers = get_file_contents('data/couriers.csv')
-            print(format_list_for_display(couriers))
+            couriers, column_names = get_table('couriers')
+            print(format_db_result_for_display(couriers, column_names)) 
             
             courier = int(input("Please enter a courier number: "))
             
@@ -52,11 +62,21 @@ def orders_menu():
                 "customer_name": customer_name,
                 "customer_address": customer_address,
                 "customer_phone": customer_phone,
-                "courier": courier - 1,
+                "courier_id": courier,
                 "status": "preparing"
             }
             
-            append_to_csv('data/orders.csv', new_order)
+            order_id = add_to_table('orders', new_order)
+            
+            print("Products List:")
+            products, column_names = get_table('products')
+            print(format_db_result_for_display(products, column_names))
+            
+            products_for_order = input('Please select the product ids for the order (e.g 1,2,3): ').split(',')
+            
+            for product_id in products_for_order:
+                add_to_table('products_on_orders', {"order_id":order_id, "product_id": int(product_id)})
+            
         
         # Update order status
         elif orders_menu_input == 3:

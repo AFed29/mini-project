@@ -3,6 +3,10 @@ from file_helpers.csv_file import (
     format_list_for_display,
     append_to_csv,
     write_to_csv)
+from db.db_helper import (
+    get_table,
+    format_db_result_for_display,
+    add_to_table)
 
 couriers_menu_text = """
     COURIERS MENU
@@ -28,8 +32,8 @@ def couriers_menu():
         if couriers_menu_input == 1:
             print("Couriers List:")
             
-            couriers = get_file_contents('data/couriers.csv')
-            print(format_list_for_display(couriers))  
+            couriers, column_names = get_table('couriers')
+            print(format_db_result_for_display(couriers, column_names))  
         
         # Add new courier
         elif couriers_menu_input == 2:  
@@ -40,7 +44,7 @@ def couriers_menu():
                 'phone_number': new_courier_phone_number
             }
             
-            append_to_csv('data/couriers.csv', new_courier)
+            add_to_table('couriers', new_courier)
             
         # Update courier
         elif couriers_menu_input == 3:
