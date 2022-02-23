@@ -6,7 +6,8 @@ from file_helpers.csv_file import (
 from db.db_helper import (
     get_table,
     format_db_result_for_display,
-    add_to_table)
+    add_to_table,
+    update_item_in_table)
 
 products_menu_text = """
     PRODUCTS MENU
@@ -17,6 +18,11 @@ products_menu_text = """
     3. Update existing product
     4. Delete existing product
 """
+
+def display_products_list():
+    print("Products List:")
+    products, column_names = get_table('products')
+    print(format_db_result_for_display(products, column_names))      
 
 def products_menu():
     while True:
@@ -30,10 +36,7 @@ def products_menu():
         
         # Display list of products
         if products_menu_input == 1:
-            print("Products List:")
-            
-            products, column_names = get_table('products')
-            print(format_db_result_for_display(products, column_names))       
+            display_products_list()
         
         # Add new product
         elif products_menu_input == 2:  
@@ -48,10 +51,9 @@ def products_menu():
         
         # Update product
         elif products_menu_input == 3:
-            products = get_file_contents('data/products.csv')
-            print(format_list_for_display(products))
+            display_products_list()
             
-            update_product_index = int(input("Enter the index of the product to update: "))
+            update_product_id = int(input("Enter the id of the product to update: "))
             updated_product_name = input("Please enter the new name: ")
             updated_product_price= input("Please enter the new price: ")
             
@@ -63,17 +65,14 @@ def products_menu():
             if updated_product_price:
                 updated_product['price'] = updated_product_price 
             
-            products[update_product_index - 1].update(updated_product)
-            
-            write_to_csv('data/products.csv', products)
+            update_item_in_table('products', update_product_id, updated_product)
             
             
         # Delete Product
         elif products_menu_input == 4:
-            products = get_file_contents('data/products.csv')
-            print(format_list_for_display(products))
+            display_products_list()
             
-            product_index = int(input('Please choose a product index to delete: '))
+            product_index = int(input('Please choose a product id to delete: '))
             
             products.pop(product_index - 1)
             

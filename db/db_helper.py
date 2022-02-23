@@ -62,3 +62,30 @@ def add_to_table(table_name, item):
     connection.close()
     
     return last_row_id
+
+def update_item_in_table(table_name, item_id, item):
+    if not item:
+        return
+    connection, cursor = connect_to_db()
+    
+    column_names = item.keys()
+    values = tuple(item.values())
+    set_string = []
+    
+    for name in column_names:
+        set_string.append(f"{name} = %s")
+    
+    update_sql = f"UPDATE {table_name} SET {','.join(set_string)} WHERE id = {item_id}"
+    
+    cursor.execute(update_sql, values)
+    connection.commit()
+    connection.close()
+    
+def delete_items_by_field(table_name, field_name, value):
+    connection, cursor = connect_to_db()
+    
+    delete_sql = f"DELETE FROM {table_name} WHERE {field_name} = %s"
+    
+    cursor.execute(delete_sql, value)
+    connection.commit()
+    connection.close()

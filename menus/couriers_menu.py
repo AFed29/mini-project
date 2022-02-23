@@ -6,7 +6,8 @@ from file_helpers.csv_file import (
 from db.db_helper import (
     get_table,
     format_db_result_for_display,
-    add_to_table)
+    add_to_table,
+    update_item_in_table)
 
 couriers_menu_text = """
     COURIERS MENU
@@ -17,6 +18,11 @@ couriers_menu_text = """
     3. Update existing courier
     4. Delete existing courier
 """
+
+def display_couriers_list():
+    print("Couriers List:")
+    couriers, column_names = get_table('couriers')
+    print(format_db_result_for_display(couriers, column_names))  
 
 def couriers_menu():
     while True:
@@ -30,10 +36,7 @@ def couriers_menu():
         
         # Display list of couriers
         if couriers_menu_input == 1:
-            print("Couriers List:")
-            
-            couriers, column_names = get_table('couriers')
-            print(format_db_result_for_display(couriers, column_names))  
+            display_couriers_list()
         
         # Add new courier
         elif couriers_menu_input == 2:  
@@ -48,10 +51,9 @@ def couriers_menu():
             
         # Update courier
         elif couriers_menu_input == 3:
-            couriers = get_file_contents('data/couriers.csv')
-            print(format_list_for_display(couriers))
+            display_couriers_list()
             
-            update_courier_index = int(input("Enter the index of the courier to update: "))
+            update_courier_id = int(input("Enter the id of the courier to update: "))
             updated_courier_name = input("Please enter the new name: ")
             updated_courier_phone_number= input("Please enter the new phone_number: ")
             
@@ -62,10 +64,8 @@ def couriers_menu():
             
             if updated_courier_phone_number:
                 updated_courier['phone_number'] = updated_courier_phone_number 
-            
-            couriers[update_courier_index - 1].update(updated_courier)
-            
-            write_to_csv('data/couriers.csv', couriers)
+
+            update_item_in_table('couriers', update_courier_id, updated_courier)
             
             
         # Delete courier
@@ -73,7 +73,7 @@ def couriers_menu():
             couriers = get_file_contents('data/couriers.csv')
             print(format_list_for_display(couriers))
             
-            courier_index = int(input('Please choose a courier index to delete: '))
+            courier_index = int(input('Please choose a courier id to delete: '))
             
             couriers.pop(courier_index - 1)
             
